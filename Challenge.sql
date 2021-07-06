@@ -1,32 +1,6 @@
-﻿-- Hussein Hussein 
--- 103615588
-
--- Task 1 
-
-/* 
-
-Tour(TourName, Descriotion)
-PRIMARY KEY(TourName)
-
-Client(ClientID, Surname, GivenName, Gender)
-PRIMARY KEY(ClientID)
-
-Event(TourName, EventYear, EventMonth, EventDay, Fee)
-PRIMARY KEY(TourName, EventYear, EventMonth, EventDay)
-FOREIGN KEY(TourName) REFERENCES Tour
-
-Booking(ClientID, TourName, EventYear, EventMonth, EventDay, Payment, DateBooked)
-PRIMARY KEY(EventYear, EventMonth, EventDay, ClientID)
-FOREIGN KEY(TourName, EventYear, EventMonth, EventDay) REFERENCES Event
-FOREIGN KEY(ClientID) REFERENCES Client
-
-*/
-
--- Task 2 
-
 USE BuildQueryRes
 
-DROP TABLE IF EXISTS TOURS, Client, Booking;
+DROP TABLE IF EXISTS TOURS, Client, Events, Client;
 
 CREATE TABLE TOURS (
     TourName NVARCHAR(100),
@@ -51,10 +25,10 @@ CREATE TABLE Events (
     Fee MONEY NOT NULL, 
     PRIMARY KEY (TourName, EventYear, EventMonth, EventDay),
     FOREIGN KEY(TourName) REFERENCES TOURS,
-    CONSTRAINT chk_event_months CHECK (EventMonth IN('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')),
-    CONSTRAINT chk_event_days CHECK (EventDay >=1 AND EventDay < 32),
-    CONSTRAINT chk_event_year_len CHECK(LEN (EventYear) = 4),
-    CONSTRAINT chk_event_fee CHECK (Fee > 0)
+    CONSTRAINT chk_Event_months CHECK (EventMonth IN('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')),
+    CONSTRAINT chk_Event_days CHECK (EventDay >=1 AND EventDay < 32),
+    CONSTRAINT chk_year_len CHECK(LEN (EventYear) = 4),
+    CONSTRAINT chk_fee CHECK (Fee > 0)
     );
 
 CREATE TABLE Booking (ClientID INT,
@@ -74,11 +48,11 @@ CREATE TABLE Booking (ClientID INT,
 );
 
 --Command to view all tables created
-/*
+
 SELECT NAME 
 FROM sys.objects 
 WHERE TYPE = 'U'
-*/
+
 
 -- Task 3
 
@@ -107,54 +81,3 @@ INSERT INTO Booking (ClientID, TourName, EventMonth, EventDay, EventYear, Paymen
 (3,	'West',	'Jan',	29,	2016,	200,	'12/18/2015'),
 -- i added my own data set in accordance with criteria
 (4, 'North', 'Feb', 13, 2016,   125,    '12/9/2015');
-
-
--- Select * from Client
-
--- Task 4 
-
--- Query 1 
-/*
-Write a query that shows the client first name and surname, the tour name and description,
-the tour event year, month, day and fee, the booking date and the fee paid for the booking
-
-
-CREATE VIEW TASK AS
-SELECT C.GivenName, C.Surname, T.TourName, T.Descriotion, B.EventYear, B.EventMonth, B.EventDay, B.DateBooked, B.Payment
-FROM Booking B
-INNER JOIN 
-Client C
-ON B.ClientID = C.ClientID
-INNER JOIN Tour 
-ON T.EventYear = B.EventYear AND T.EventMonth = B.EventMonth AND T.EventDay = B.EventDay AND T.DateBooked = B.DateBooked AND T.Payment = B.Payment
-
-
-
--- Query 2
-SELECT (EventMonth),(TourName), COUNT(*) AS 'NUM Bookings'
-FROM Event
-GROUP BY EventMonth, TourName
-
--- Query 3 
-SELECT * 
-FROM Booking 
-WHERE Payment > (SELECT AVG(Payment) FROM Booking);
-
-
--- TASK 5
-
--- above query 1
-
--- task 6
-SELECT * FROM Booking
--- should output 9 results
--- this also proves query one as it demonstrates that there isnt more than desired booking count
-
-Select Count (*) Booking
--- this proves that query two is credible and valid as it equals the predetermied booking amount
-
-SELECT COUNT(*) 
-From Booking B 
-Where B.Payment > (SELECT AVG(Payment) FROM Booking);
-
-*/
