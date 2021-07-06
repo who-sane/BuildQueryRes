@@ -26,7 +26,7 @@ FOREIGN KEY(ClientID) REFERENCES Client
 
 USE BuildQueryRes
 
-DROP TABLE IF EXISTS TOUR, Client, Event, Booking;
+DROP TABLE IF EXISTS TOUR, Client, Booking;
 
 CREATE TABLE TOUR(
     TourName NVARCHAR(100),
@@ -45,7 +45,7 @@ CREATE TABLE Client(
 
 CREATE TABLE Event(TourName NVARCHAR(100), 
     EventYear INT, 
-    EventMonth INT , 
+    EventMonth Nvarchar(3) , 
     EventDay INT,
     Fee MONEY NOT NULL, 
     PRIMARY KEY (TourName, EventYear, EventMonth, EventDay),
@@ -59,7 +59,7 @@ CREATE TABLE Event(TourName NVARCHAR(100),
 CREATE TABLE Booking(ClientID INT,
     TourName NVARCHAR(100), 
     EventYear INT, 
-    EventMonth INT, 
+    EventMonth Nvarchar(3), 
     EventDay INT, 
     Payment MONEY ,
     DateBooked DATE NOT NULL 
@@ -71,9 +71,41 @@ CREATE TABLE Booking(ClientID INT,
     CONSTRAINT chk_booking_year_len CHECK(LEN (EventYear) = 4),
     CONSTRAINT chk_booking_payment CHECK (Payment > 0)
 );
+/*
+Command to view all tables created
 
 SELECT NAME 
 FROM sys.objects 
 WHERE TYPE = 'U'
+*/
+
+-- Task 3
+
+INSERT INTO TOUR(TourName, Descriotion) VALUES
+('North', 'Tour of wineries and outlets of the Bedigo and Castlemaine region'),
+('South', 'Tour of wineries and outlets of Mornington Penisula'),
+('West', 'Tour of wineries and outlets of the Geelong and Otways region');
+
+INSERT INTO Client (ClientID, Surname, GivenName, Gender) VALUES
+(1,	'Price',	'Taylor',	'M'),
+(2,	'Gamble',	'Ellyse',	'F'),
+(3,	'Tan',	'Tilly',	'F'),
+(4, 'Hussein', 'Hussein', 'M');
+
+-- formatted dates using excel.
+INSERT INTO Booking (ClientID, TourName, EventMonth, EventDay, EventYear, Payment, DateBooked) VALUES
+(1,	'North','Jan',	9,	2016,	200,	'12/10/2015'),
+(2,	'North','Jan',	9,	2016,	200,	'12/16/2015'),
+(1,	'North','Feb',	13,	2016,	225,	'1/8/2016'),
+(2,	'North','Feb',	13,	2016,	125,	'1/14/2016'),
+(3,	'North','Feb',	13,	2016,	225,	'2/3/2016'),
+(1,	'South','Jan',	9,	2016,	200,	'12/10/2015'),
+(2,	'South','Jan',	16,	2016,	200,	'12/18/2015'),
+(3,	'South','Jan',	16,	2016,	200,	'1/9/2016'),
+(2,	'West',	'Jan',	29,	2016,	225,	'12/17/2015'),
+(3,	'West',	'Jan',	29,	2016,	200,	'12/18/2015'),
+-- i added my own data set in accordance with criteria
+(4, 'North', 'Feb', 13, 2016,   125,    '12/9/2015');
 
 
+Select * from Client
