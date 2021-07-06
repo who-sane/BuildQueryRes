@@ -48,7 +48,7 @@ CREATE TABLE Client (
     GivenName NVARCHAR(100) NOT NULL,
     Gender Nvarchar(1),
     PRIMARY KEY(ClientID),
-    CONSTRAINT CHK_GENDER CHECK (Gender IN ('M','F','I')),
+    CONSTRAINT CHK_GENDER CHECK (Gender IN ('M','F','I'))
 );
 
 CREATE TABLE Events ( 
