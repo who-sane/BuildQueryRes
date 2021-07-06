@@ -25,10 +25,18 @@ FOREIGN KEY(ClientID) REFERENCES Client
 -- Task 2 
 
 USE BuildQueryRes
+IF OBJECT_ID('TOUR') IS NOT NULL
+    DROP TABLE TOUR;
+IF OBJECT_ID('TOUR') IS NULL
+    DROP TABLE TOUR;
+IF OBJECT_ID('Client') IS NOT NULL
+    DROP TABLE Client;
+IF OBJECT_ID('Booking') IS NOT NULL
+    DROP TABLE Booking;
 
-DROP TABLE IF EXISTS TOURS, Client, Booking;
+GO
 
-CREATE TABLE TOURS (
+CREATE TABLE TOUR (
     TourName NVARCHAR(100),
     Descriotion NVARCHAR(500),
     PRIMARY KEY(TourName)
@@ -50,7 +58,7 @@ CREATE TABLE Events (
     EventDay INT,
     Fee MONEY NOT NULL, 
     PRIMARY KEY (TourName, EventYear, EventMonth, EventDay),
-    FOREIGN KEY(TourName) REFERENCES TOURS,
+    FOREIGN KEY(TourName) REFERENCES TOUR,
     CONSTRAINT chk_event_months CHECK (EventMonth IN('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')),
     CONSTRAINT chk_event_days CHECK (EventDay >=1 AND EventDay < 32),
     CONSTRAINT chk_event_year_len CHECK(LEN (EventYear) = 4),
@@ -119,7 +127,7 @@ Write a query that shows the client first name and surname, the tour name and de
 the tour event year, month, day and fee, the booking date and the fee paid for the booking
 
 
-CREATE VIEW TASK AS
+CREATE VIEW TASK5 AS
 SELECT C.GivenName, C.Surname, T.TourName, T.Descriotion, B.EventYear, B.EventMonth, B.EventDay, B.DateBooked, B.Payment
 FROM Booking B
 INNER JOIN 
